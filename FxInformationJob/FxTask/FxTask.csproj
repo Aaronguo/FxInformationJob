@@ -83,10 +83,14 @@
     <Compile Include="Framework\AppSettings.cs" />
     <Compile Include="Framework\Filter.cs" />
     <Compile Include="Framework\FxQueue.cs" />
+    <Compile Include="Framework\JobBase.cs" />
     <Compile Include="Framework\Logging.cs" />
     <Compile Include="FxCar\Buy\CarBuyJobAuthorize.cs" />
     <Compile Include="FxCar\Buy\CarBuyJobPictureProcess.cs" />
-    <Compile Include="FxCar\Buy\CarBuyLoad.cs" />
+    <Compile Include="FxCar\Buy\CarBuyJobLoad.cs" />
+    <Compile Include="FxCar\Transfer\CarTransferJobAuthorize.cs" />
+    <Compile Include="FxCar\Transfer\CarTransferJobLoad.cs" />
+    <Compile Include="FxCar\Transfer\CarTransferJobPictureProcess.cs" />
     <Compile Include="IService\IInfoJobAuthorize.cs" />
     <Compile Include="IService\IInfoJobLoad.cs" />
     <Compile Include="IService\IInfoJobPictureProcess.cs" />
@@ -98,8 +102,6 @@
     <Compile Include="QuartzLoadProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FxCar\IService\" />
-    <Folder Include="FxCar\Transfer\" />
     <Folder Include="FxGoods\Buy\" />
     <Folder Include="FxGoods\IService\" />
     <Folder Include="FxGoods\Transfer\" />

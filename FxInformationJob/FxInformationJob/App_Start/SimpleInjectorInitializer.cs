@@ -43,9 +43,9 @@ namespace FxInformationJob.App_Start
             container.RegisterSingle<FxTask.Filter>();
 
             //FxCar
-            container.Register<Fx.Domain.FxCar.IService.ICarBuyJob, Fx.Domain.FxCar.CarJobService>();
-
-
+            container.Register<Fx.Domain.FxCar.IService.ICarBuyJob, Fx.Domain.FxCar.CarBuyJobService>();
+            container.Register<Fx.Domain.FxCar.IService.ICarTransferJob, Fx.Domain.FxCar.CarTransferJobService>();
+            
             //FxTask
             
 

@@ -5,21 +5,21 @@ using Fx.Domain.FxCar;
 using Fx.Domain.FxCar.IService;
 using FxTask.IService;
 
-namespace FxTask.FxCar.Buy
+namespace FxTask.FxCar.Transfer
 {
-    public class CarBuyJobAuthorize : JobBase, IInfoJobAuthorize
+    public class CarTransferJobAuthorize : JobBase, IInfoJobAuthorize
     {
         Filter filter;
-        ICarBuyJob carBuyJobService;
-        public CarBuyJobAuthorize()
+        ICarTransferJob carTransferJobService;
+        public CarTransferJobAuthorize()
         {
             this.filter = DependencyResolver.Current.GetService<Filter>();
-            this.carBuyJobService = DependencyResolver.Current.GetService<ICarBuyJob>();
-            this.JobKey = "FxTask.FxCar.Buy.CarBuyJobAuthorize";
+            this.carTransferJobService = DependencyResolver.Current.GetService<ICarTransferJob>();
+            JobKey = "FxTask.FxCar.Transfer.CarTransferJobAuthorize ";
         }
         public void Authorize()
         {
-            int id = JobQueue.CarBuyJobLoadQueue.GetItem();
+            int id = JobQueue.CarTransferJobLoadQueue.GetItem();
             if (id == 0)
             {
                 return;
@@ -28,7 +28,7 @@ namespace FxTask.FxCar.Buy
             {
                 while (id != 0)
                 {
-                    var car = context.CarBuyInfos.Where(r => r.CarBuyInfoId == id).
+                    var car = context.CarTransferInfos.Where(r => r.CarTransferInfoId == id).
                             Select(r => new { r.Mark, r.PublishTitle }).FirstOrDefault();
                     if (car != null)
                     {
@@ -36,30 +36,23 @@ namespace FxTask.FxCar.Buy
                         {
                             try
                             {
-                                carBuyJobService.AuthorizeSuccess(id);
+                                carTransferJobService.AuthorizeSuccess(id);
+                                JobQueue.CarTransferJobPictureProcessQueue.Add(id);
                             }
                             catch (Exception ex)
                             {
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.AuthorizeSuccess ", id));
-                            }
-                            try
-                            {
-                                carBuyJobService.Publish(id);
-                            }
-                            catch (Exception ex)
-                            {
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.Publish ", id));
+                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carTransferJobService.AuthorizeSuccess", id));
                             }
                         }
                         else
                         {
                             try
                             {
-                                carBuyJobService.AuthorizeFaild(id);
+                                carTransferJobService.AuthorizeFaild(id);
                             }
                             catch (Exception ex)
                             {
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.AuthorizeFaild ", id));
+                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carTransferJobService.AuthorizeFaild", id));
                             }
                         }
                         id = JobQueue.CarBuyJobLoadQueue.GetItem();
@@ -71,6 +64,14 @@ namespace FxTask.FxCar.Buy
         protected override void RunJobBusiness()
         {
             Authorize();
+        }
+
+        protected override void Completed()
+        {
+            if (JobQueue.CarTransferJobPictureProcessQueue.HasItem())
+            {
+                new CarTransferJobPictureProcess().Execute();
+            }
         }
     }
 }

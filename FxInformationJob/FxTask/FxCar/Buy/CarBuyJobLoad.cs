@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Web.Caching;
-using System.Web.Mvc;
 using Fx.Domain.FxCar;
 using Fx.Entity;
-using Fx.Infrastructure.Caching;
 using FxTask.IService;
-using Quartz;
 
 namespace FxTask.FxCar.Buy
 {
-    public class CarBuyLoad : IInfoJobLoad, IJob
+    public class CarBuyJobLoad : JobBase, IInfoJobLoad
     {
-        ICacheManager cacheService;
-        AppSettings appSettings;
-        public CarBuyLoad()
+        public CarBuyJobLoad()
         {
-            this.cacheService = DependencyResolver.Current.GetService<ICacheManager>(); ;
-            this.appSettings = DependencyResolver.Current.GetService<AppSettings>();
+            this.JobKey = "FxTask.FxCar.Buy.CarBuyJobLoad";
         }
         public void LoadJob()
         {
@@ -36,15 +28,20 @@ namespace FxTask.FxCar.Buy
             }
             catch (Exception ex)
             {
-                ex.LogEx("FxTask.FxCar.Buy.CarBuyLoad");
+                ex.LogEx(string.Format("{0} {1}", JobKey, "LoadJob"));
             }
         }
 
-        public void Execute(IJobExecutionContext context)
+        protected override void RunJobBusiness()
         {
-            if (!appSettings.TaskShutDown())
+            LoadJob();
+        }
+
+        protected override void Completed()
+        {
+            if (JobQueue.CarBuyJobLoadQueue.HasItem())
             {
-                LoadJob();
+                new CarBuyJobAuthorize().Execute();
             }
         }
     }

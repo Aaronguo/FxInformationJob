@@ -35,11 +35,21 @@ namespace FxTask
                 }
                 return lst.Dequeue();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ex.LogEx("FxTask.FxQueue<T> GetItem()");  
+                ex.LogEx("FxTask.FxQueue<T> GetItem()");
             }
             return default(T);
+        }
+
+        public bool HasItem()
+        {
+            return lst.Count > 0;
+        }
+
+        public int Count
+        {
+            get { return lst.Count; }
         }
     }
 }

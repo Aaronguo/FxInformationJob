@@ -10,7 +10,7 @@ namespace FxTask
         public static readonly string CarBuyLoad = "CarBuyLoadJob";
         public static readonly string CarBuyJobAuthorize = "CarBuyJobAuthorizeJob";
         public static readonly string KeepOwn = "KeepOwnJob";
-
+        public static readonly string CarTransferJobLoad = "CarTransferJobLoadJob";
         
     }
 }

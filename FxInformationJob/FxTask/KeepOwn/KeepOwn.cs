@@ -11,31 +11,25 @@ using Quartz;
 
 namespace FxTask
 {
-    public class KeepOwn : IJob
+    public class KeepOwn : JobBase
     {
-        AppSettings appSetting;
-        public KeepOwn()
+        protected override void RunJobBusiness()
         {
-            this.appSetting = DependencyResolver.Current.GetService<AppSettings>();
-        }
-
-        public void Execute(IJobExecutionContext context)
-        {
-            if (!appSetting.TaskShutDown() && !string.IsNullOrEmpty(appSetting.OwnSiteUrl()))
-            {                
+            if (!appSettings.TaskShutDown() && !string.IsNullOrEmpty(appSettings.OwnSiteUrl()))
+            {
                 try
                 {
                     LogWriter logWriter = EnterpriseLibraryContainer.Current.GetInstance<LogWriter>();
                     ChenHttp.HttpHelper http = new ChenHttp.HttpHelper();
-                    var res = http.GetRequest(appSetting.OwnSiteUrl());
-                    StreamWriter sw = new StreamWriter(@"D:\Temp\quartz.txt", true);
+                    var res = http.GetRequest(appSettings.OwnSiteUrl());
+                    StreamWriter sw = new StreamWriter(@"D:\JobTxt\quartz.txt", true);
                     sw.WriteLine(DateTime.Now.ToString());
                     sw.Flush();
-                    sw.Close();                   
+                    sw.Close();
                 }
                 catch (Exception ex)
                 {
-                    ex.LogEx("FxTask.KeepOwn");                    
+                    ex.LogEx("FxTask.KeepOwn");
                 }
             }
         }

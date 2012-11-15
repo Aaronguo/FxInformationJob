@@ -163,6 +163,20 @@ namespace FxTask
             return "";
         }
 
+        public string CdnPath()
+        {
+            if (cacheService.Get("CdnPath") == null)
+            {
+                cacheService.Insert("CdnPath", GetString("CdnPath", ""), 3600, System.Web.Caching.CacheItemPriority.Default);
+            }
+            object o = cacheService.Get("CdnPath");
+            if (o != null)
+            {
+                return o.ToString();
+            }
+            return "";
+        }
+
         #endregion
 
 

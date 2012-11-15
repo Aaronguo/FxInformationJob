@@ -21,9 +21,13 @@ namespace FxTask
 
         protected void InitScheduler()
         {
-            AddJob<FxTask.KeepOwn>(JobKey.KeepOwn, JobKey.CarBuyLoad + "Group", 1);
-            AddJob<FxCar.Buy.CarBuyLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 1);
-            AddJob<FxCar.Buy.CarBuyJobAuthorize>(30, JobKey.CarBuyJobAuthorize, JobKey.CarBuyJobAuthorize + "Group");
+            AddJob<FxTask.KeepOwn>(JobKey.KeepOwn, JobKey.KeepOwn + "Group", 10, 40);
+
+            AddJob<FxCar.Buy.CarBuyJobLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 2);//2分钟考虑100张图片压缩
+            AddJob<FxCar.Transfer.CarTransferJobLoad>(JobKey.CarTransferJobLoad, JobKey.CarTransferJobLoad + "Group", 2);
+
+
+            AddJob<FxCar.Buy.CarBuyJobAuthorize>(JobKey.CarBuyJobAuthorize, JobKey.CarBuyJobAuthorize + "Group", 2, 20);
         }
 
 
@@ -41,27 +45,30 @@ namespace FxTask
         }
 
 
-        private void AddJob<T>(string name, string group, int minutes) where T : IJob
+        private void AddJob<T>(string name, string group, int minutes, int delaySeconds = 0) where T : IJob
         {
+            DateTimeOffset offset = new DateTimeOffset(DateTime.UtcNow.AddSeconds(delaySeconds));
             IJobDetail job = JobBuilder.Create<T>()
                .WithIdentity(name, group)
                .Build();
             ITrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
                 .WithIdentity(name, group)
-                .StartNow()
+                .StartAt(offset)
                 .WithSimpleSchedule(r => r.WithIntervalInMinutes(minutes).RepeatForever())
+                .WithIdentity(name)
                 .Build();
             scheduler.ScheduleJob(job, trigger);
         }
 
-        private void AddJob<T>(int seconds, string name, string group) where T : IJob
+        private void AddJob<T>(int seconds, string name, string group, int delaySeconds = 0) where T : IJob
         {
+            DateTimeOffset offset = new DateTimeOffset(DateTime.UtcNow.AddSeconds(delaySeconds));
             IJobDetail job = JobBuilder.Create<T>()
                .WithIdentity(name, group)
                .Build();
             ITrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
                 .WithIdentity(name, group)
-                .StartNow()
+                  .StartAt(offset)
                 .WithSimpleSchedule(r => r.WithIntervalInSeconds(seconds).RepeatForever())
                 .Build();
             scheduler.ScheduleJob(job, trigger);

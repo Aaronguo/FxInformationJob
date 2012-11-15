@@ -15,7 +15,8 @@ namespace FxTask
         {
             try
             {
-                logWriter.Write(ex, msg);
+
+                logWriter.Write(ex, msg);//注释中不能包含“--”，并且“-”不能是最后一个字符 配置 文件多了一个- 导致错误。。
             }
             catch (Exception)
             {
