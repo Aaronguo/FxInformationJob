@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxInformationJob", "FxInformationJob\FxInformationJob.csproj", "{F30EFAAA-FBB9-4497-B9D3-3AC3B16DCCD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxInformationJob.Tests", "FxInformationJob.Tests\FxInformationJob.Tests.csproj", "{538118AE-1644-40A7-B325-89BB14DE0EF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxTask", "FxTask\FxTask.csproj", "{258B973A-B91A-47E2-8434-CA95BECBC3AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{258B973A-B91A-47E2-8434-CA95BECBC3AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258B973A-B91A-47E2-8434-CA95BECBC3AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258B973A-B91A-47E2-8434-CA95BECBC3AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258B973A-B91A-47E2-8434-CA95BECBC3AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{538118AE-1644-40A7-B325-89BB14DE0EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538118AE-1644-40A7-B325-89BB14DE0EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{538118AE-1644-40A7-B325-89BB14DE0EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{538118AE-1644-40A7-B325-89BB14DE0EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30EFAAA-FBB9-4497-B9D3-3AC3B16DCCD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30EFAAA-FBB9-4497-B9D3-3AC3B16DCCD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30EFAAA-FBB9-4497-B9D3-3AC3B16DCCD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30EFAAA-FBB9-4497-B9D3-3AC3B16DCCD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
