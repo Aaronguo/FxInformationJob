@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Quartz;
 
-namespace FxTask
+namespace FxTask.KeepOwn
 {
     public class KeepOwn : JobBase
     {

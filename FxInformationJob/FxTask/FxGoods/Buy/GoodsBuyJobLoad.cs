@@ -1,34 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fx.Domain.FxCar;
+using System.Text;
+using Fx.Domain.FxGoods;
 using Fx.Entity;
 using FxTask.IService;
 
-namespace FxTask.FxCar.Buy
+namespace FxTask.FxGoods.Buy
 {
-    public class CarBuyJobLoad : JobBase, IInfoJobLoad
+    class GoodsBuyJobLoad : JobBase, IInfoJobLoad
     {
-        public CarBuyJobLoad()
+        public GoodsBuyJobLoad()
         {
-            this.JobKey = "FxTask.FxCar.Buy.CarBuyJobLoad";
+            this.JobKey = "FxTask.FxGoods.Buy.GoodsBuyJobLoad";
         }
+
         public void LoadJob()
         {
             try
             {
                 List<int> list = new List<int>();
-                using (var context = new FxCarContext())
+                using (var context = new FxGoodsContext())
                 {
-                    list = context.CarBuyInfos
+                    list = context.GoodsBuyInfos
                          .Where(r => r.InfoProcessState == (int)ProcessState.Commit).
-                             Select(r => r.CarBuyInfoId).Take(20).ToList();
+                             Select(r => r.GoodsBuyInfoId).Take(20).ToList();
                 }
-                JobQueue.CarBuyJobLoadQueue.AddRange(list);
+                JobQueue.GoodsBuyJobLoadQueue.AddRange(list);
             }
             catch (Exception ex)
             {
-                ex.LogEx(string.Format("{0} {1}", JobKey, "CarBuyJobLoad"));
+                ex.LogEx(string.Format("{0} {1}", JobKey, "GoodsBuyJobLoad"));
             }
         }
 
@@ -39,9 +41,9 @@ namespace FxTask.FxCar.Buy
 
         protected override void Completed()
         {
-            if (JobQueue.CarBuyJobLoadQueue.HasItem())
+            if (JobQueue.GoodsBuyJobLoadQueue.HasItem())
             {
-                new CarBuyJobAuthorize().Execute();
+                new GoodsBuyJobAuthorize().Execute();
             }
         }
     }

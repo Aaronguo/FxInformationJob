@@ -19,50 +19,61 @@ namespace FxTask.FxCar.Buy
         }
         public void Authorize()
         {
-            int id = JobQueue.CarBuyJobLoadQueue.GetItem();
-            if (id == 0)
+            int carId = JobQueue.CarBuyJobLoadQueue.GetItem(carBuyJobService.Authorizing);
+            if (carId == 0)
             {
                 return;
             }
             using (var context = new FxCarContext())
             {
-                while (id != 0)
-                {
-                    var car = context.CarBuyInfos.Where(r => r.CarBuyInfoId == id).
+                while (carId != 0)
+                {                    
+                    var car = context.CarBuyInfos.Where(r => r.CarBuyInfoId == carId).
                             Select(r => new { r.Mark, r.PublishTitle }).FirstOrDefault();
                     if (car != null)
                     {
-                        if (filter.FilterContent(car.Mark) && filter.FilterContent(car.PublishTitle))
+                        if (filter.FilterContent(car.Mark).Success && filter.FilterContent(car.PublishTitle).Success)
                         {
                             try
                             {
-                                carBuyJobService.AuthorizeSuccess(id);
+                                carBuyJobService.AuthorizeSuccess(carId);
                             }
                             catch (Exception ex)
                             {
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.AuthorizeSuccess ", id));
+                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.AuthorizeSuccess ", carId));
                             }
                             try
                             {
-                                carBuyJobService.Publish(id);
+                                carBuyJobService.Publish(carId);
                             }
                             catch (Exception ex)
                             {
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.Publish ", id));
+                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.Publish ", carId));
                             }
                         }
                         else
                         {
                             try
                             {
-                                carBuyJobService.AuthorizeFaild(id);
+                                string msg = "";
+                                var filter1 = filter.FilterContent(car.Mark);
+                                var filter2 = filter.FilterContent(car.PublishTitle);
+                                if (!filter1.Success)
+                                {
+                                    msg += string.Format("你的帖子中包含了[[{0}]] 这个关键字", filter1.Key);
+                                }
+                                if (!filter2.Success)
+                                {
+                                    msg += string.Format("你的帖子中包含了[[{0}]] 这个关键字", filter2.Key);
+                                }
+                                carBuyJobService.AuthorizeFaild(carId,msg);
                             }
                             catch (Exception ex)
                             {
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.AuthorizeFaild ", id));
+                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "carbuyjobService.AuthorizeFaild ", carId));
                             }
                         }
-                        id = JobQueue.CarBuyJobLoadQueue.GetItem();
+                        carId = JobQueue.CarBuyJobLoadQueue.GetItem(carBuyJobService.Authorizing);
                     }
                 }
             }

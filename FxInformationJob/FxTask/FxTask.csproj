@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Framework\AppSettings.cs" />
     <Compile Include="Framework\Filter.cs" />
+    <Compile Include="Framework\FilterResult.cs" />
     <Compile Include="Framework\FxQueue.cs" />
     <Compile Include="Framework\JobBase.cs" />
     <Compile Include="Framework\Logging.cs" />
@@ -91,6 +92,17 @@
     <Compile Include="FxCar\Transfer\CarTransferJobAuthorize.cs" />
     <Compile Include="FxCar\Transfer\CarTransferJobLoad.cs" />
     <Compile Include="FxCar\Transfer\CarTransferJobPictureProcess.cs" />
+    <Compile Include="FxGoods\Buy\GoodsBuyJobAuthorize.cs" />
+    <Compile Include="FxGoods\Buy\GoodsBuyJobLoad.cs" />
+    <Compile Include="FxGoods\Buy\GoodsBuyJobPictureProcess.cs" />
+    <Compile Include="FxGoods\Transfer\GoodsTransferJobAuthorize.cs" />
+    <Compile Include="FxGoods\Transfer\GoodsTransferJobLoad.cs" />
+    <Compile Include="FxGoods\Transfer\GoodsTransferJobPictureProcess.cs" />
+    <Compile Include="FxHouse\Buy\HouseBuyJobAuthorize.cs" />
+    <Compile Include="FxHouse\Buy\HouseBuyJobLoad.cs" />
+    <Compile Include="FxHouse\Transfer\HouseTransferJobAuthorize.cs" />
+    <Compile Include="FxHouse\Transfer\HouseTransferJobLoad.cs" />
+    <Compile Include="FxHouse\Transfer\HouseTransferJobPictureProcess.cs" />
     <Compile Include="IService\IInfoJobAuthorize.cs" />
     <Compile Include="IService\IInfoJobLoad.cs" />
     <Compile Include="IService\IInfoJobPictureProcess.cs" />
@@ -98,25 +110,16 @@
     <Compile Include="JobKey.cs" />
     <Compile Include="JobQueue.cs" />
     <Compile Include="KeepOwn\KeepOwn.cs" />
+    <Compile Include="KeepYingTao\KeepYingTao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuartzLoadProvider.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FxGoods\Buy\" />
-    <Folder Include="FxGoods\IService\" />
-    <Folder Include="FxGoods\Transfer\" />
-    <Folder Include="FxHouse\Buy\" />
-    <Folder Include="FxHouse\IService\" />
-    <Folder Include="FxHouse\Transfer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Note\Note.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

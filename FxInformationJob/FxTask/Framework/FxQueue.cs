@@ -25,7 +25,9 @@ namespace FxTask
             }
         }
 
-        public T GetItem()
+        public object lockd = new object();
+
+        public T GetItem(Func<T,bool> func)
         {
             try
             {
@@ -33,7 +35,15 @@ namespace FxTask
                 {
                     return default(T);
                 }
-                return lst.Dequeue();
+                else
+                {
+                    lock (lockd)
+                    {
+                        T t = lst.Dequeue();
+                        func(t);
+                        return t;
+                    }
+                }
             }
             catch (Exception ex)
             {

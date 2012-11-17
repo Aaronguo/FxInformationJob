@@ -8,7 +8,7 @@ using Quartz.Impl;
 
 namespace FxTask
 {
-    public class QuartzLoadProvider //: StdSchedulerProvider
+    public class QuartzLoadProvider
     {
         IScheduler scheduler;
         public void Load()
@@ -21,29 +21,31 @@ namespace FxTask
 
         protected void InitScheduler()
         {
-            AddJob<FxTask.KeepOwn>(JobKey.KeepOwn, JobKey.KeepOwn + "Group", 10, 40);
+            //AddJob<FxTask.KeepOwn.KeepOwn>(JobKey.KeepOwn, JobKey.KeepOwn + "Group", 10, 40);
 
-            AddJob<FxCar.Buy.CarBuyJobLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 2);//2分钟考虑100张图片压缩
-            AddJob<FxCar.Transfer.CarTransferJobLoad>(JobKey.CarTransferJobLoad, JobKey.CarTransferJobLoad + "Group", 2);
+            AddJob<FxTask.KeepYingTao.KeepYingTao>(JobKey.KeepYingTao, JobKey.KeepYingTao + "Group", 8, 40);
 
 
-            AddJob<FxCar.Buy.CarBuyJobAuthorize>(JobKey.CarBuyJobAuthorize, JobKey.CarBuyJobAuthorize + "Group", 2, 20);
+            AddJob<FxGoods.Buy.GoodsBuyJobLoad>(JobKey.GoodsBuyLoad, JobKey.GoodsBuyLoad + "Group", 1);//2分钟考虑100张图片压缩
+            AddJob<FxGoods.Transfer.GoodsTransferJobLoad>(JobKey.GoodsTransferLoad, JobKey.GoodsTransferLoad + "Group", 1, 20);
+
+            AddJob<FxCar.Buy.CarBuyJobLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 1, 12);//2分钟考虑100张图片压缩
+            AddJob<FxCar.Transfer.CarTransferJobLoad>(JobKey.CarTransferJobLoad, JobKey.CarTransferJobLoad + "Group", 1, 32);
+
+            AddJob<FxHouse.Buy.HouseBuyJobLoad>(JobKey.HouseBuyLoad, JobKey.HouseBuyLoad + "Group", 1, 24);//2分钟考虑100张图片压缩
+            AddJob<FxHouse.Transfer.HouseTransferJobLoad>(JobKey.HouseTransferLoad, JobKey.HouseTransferLoad + "Group", 1, 54);
+
+
+            //AddJob<FxGoods.Buy.GoodsBuyJobLoad>(JobKey.GoodsBuyLoad, JobKey.GoodsBuyLoad + "Group", 1);
+            //AddJob<FxGoods.Transfer.GoodsTransferJobLoad>(JobKey.GoodsTransferLoad, JobKey.GoodsTransferLoad + "Group", 1, 20);
+
+
+            //AddJob<FxCar.Buy.CarBuyJobLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 1);//2分钟考虑100张图片压缩
+            //AddJob<FxCar.Transfer.CarTransferJobLoad>(JobKey.CarTransferJobLoad, JobKey.CarTransferJobLoad + "Group", 1);
+
+
+            //AddJob<FxCar.Buy.CarBuyJobAuthorize>(JobKey.CarBuyJobAuthorize, JobKey.CarBuyJobAuthorize + "Group", 2, 20);
         }
-
-
-        protected void CreateJob(IScheduler scheduler)
-        {
-            IJobDetail keepOwnJob = JobBuilder.Create<KeepOwn>()
-             .WithIdentity("KeepOwnJob", "KeepOwnJobGroup")
-             .Build();
-            ITrigger keepOwnTrigger = (ISimpleTrigger)TriggerBuilder.Create()
-                .WithIdentity("KeepOwnTrigger", "KeepOwnTriggerGroup")
-                .StartNow()
-                .WithSimpleSchedule(r => r.WithIntervalInMinutes(1).RepeatForever())
-                .Build();
-            scheduler.ScheduleJob(keepOwnJob, keepOwnTrigger);
-        }
-
 
         private void AddJob<T>(string name, string group, int minutes, int delaySeconds = 0) where T : IJob
         {
@@ -55,21 +57,6 @@ namespace FxTask
                 .WithIdentity(name, group)
                 .StartAt(offset)
                 .WithSimpleSchedule(r => r.WithIntervalInMinutes(minutes).RepeatForever())
-                .WithIdentity(name)
-                .Build();
-            scheduler.ScheduleJob(job, trigger);
-        }
-
-        private void AddJob<T>(int seconds, string name, string group, int delaySeconds = 0) where T : IJob
-        {
-            DateTimeOffset offset = new DateTimeOffset(DateTime.UtcNow.AddSeconds(delaySeconds));
-            IJobDetail job = JobBuilder.Create<T>()
-               .WithIdentity(name, group)
-               .Build();
-            ITrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                .WithIdentity(name, group)
-                  .StartAt(offset)
-                .WithSimpleSchedule(r => r.WithIntervalInSeconds(seconds).RepeatForever())
                 .Build();
             scheduler.ScheduleJob(job, trigger);
         }

@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
-using Fx.Domain.FxCar;
-using Fx.Domain.FxCar.IService;
+using Fx.Domain.FxGoods;
+using Fx.Domain.FxGoods.IService;
 using FxTask.IService;
 using ImageResizer;
 
-namespace FxTask.FxCar.Transfer
+namespace FxTask.FxGoods.Buy
 {
-    public class CarTransferJobPictureProcess : JobBase, IInfoJobPictureProcess
+    public class GoodsBuyJobPictureProcess : JobBase, IInfoJobPictureProcess
     {
-        ICarTransferJob carTransferJobService;
-        public CarTransferJobPictureProcess()
+        IGoodsBuyJob goodsBuyJobService;
+        public GoodsBuyJobPictureProcess()
         {
-            this.JobKey = "FxTask.FxCar.Transfer.CarTransferJobPictureProcess";
-            this.carTransferJobService = DependencyResolver.Current.GetService<ICarTransferJob>();
+            this.JobKey = "FxTask.FxGoods.Buy.GoodsBuyJobPictureProcess";
+            this.goodsBuyJobService = DependencyResolver.Current.GetService<IGoodsBuyJob>();
         }
 
         protected override void RunJobBusiness()
@@ -24,16 +26,16 @@ namespace FxTask.FxCar.Transfer
 
         public void PictureProcess()
         {
-            int carId = JobQueue.CarTransferJobPictureProcessQueue.GetItem(carTransferJobService.PictrueCdning);
-            if (carId == 0)
+            int goodsId = JobQueue.GoodsBuyJobPictureProcessQueue.GetItem(goodsBuyJobService.PictrueCdning);
+            if (goodsId == 0)
             {
                 return;
             }
-            using (var context = new FxCarContext())
+            using (var context = new FxGoodsContext())
             {
-                while (carId != 0)
+                while (goodsId != 0)
                 {
-                    var car = context.CarTransferInfos.Where(r => r.CarTransferInfoId == carId).FirstOrDefault();
+                    var car = context.GoodsBuyInfos.Where(r => r.GoodsBuyInfoId == goodsId).FirstOrDefault();
                     if (car != null)
                     {
                         string source;
@@ -51,7 +53,7 @@ namespace FxTask.FxCar.Transfer
                                     MaxHeight = 500,
                                     MaxWidth = 500,
                                 }) { CreateParentDirectory = true };
-                                ImageBuilder.Current.Build(job);                                
+                                ImageBuilder.Current.Build(job);
                             }
                             catch (Exception ex)
                             {
@@ -67,19 +69,19 @@ namespace FxTask.FxCar.Transfer
                                     }
                                 }
                                 error++;
-                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "PictureProcess", picture.TransferPictureId));
+                                ex.LogEx(string.Format("{0} {1} {2}", JobKey, "PictureProcess", picture.BuyPictureId));
                             }
                         }
                         if (error == 0)
                         {
-                            carTransferJobService.PictrueCdnSuccessd(carId);
-                            carTransferJobService.Publish(carId);
+                            goodsBuyJobService.PictrueCdnSuccessd(goodsId);
+                            goodsBuyJobService.Publish(goodsId);
                         }
                         else
                         {
-                            carTransferJobService.PictrueCdnFailed(carId, errmsg);
+                            goodsBuyJobService.PictrueCdnFailed(goodsId, errmsg);
                         }
-                        carId = JobQueue.CarTransferJobPictureProcessQueue.GetItem(carTransferJobService.PictrueCdning);
+                        goodsId = JobQueue.GoodsBuyJobPictureProcessQueue.GetItem(goodsBuyJobService.PictrueCdning);
                     }
                 }
             }
@@ -87,11 +89,7 @@ namespace FxTask.FxCar.Transfer
 
         protected override void Completed()
         {
-            
+
         }
     }
 }
-
-
-//            ImageJob job = new ImageJob(Request.Files[upload].InputStream, "~/images/"+new Random().Next(1000000)+".jpg", new ResizeSettings("maxwidth=500&crop=auto"));
-//            ImageBuilder.Current.Build(job);

@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
-using Fx.Domain.FxCar;
-using Fx.Domain.FxCar.IService;
+using Fx.Domain.FxGoods;
+using Fx.Domain.FxGoods.IService;
 using FxTask.IService;
 using ImageResizer;
 
-namespace FxTask.FxCar.Transfer
+namespace FxTask.FxGoods.Transfer
 {
-    public class CarTransferJobPictureProcess : JobBase, IInfoJobPictureProcess
+    public class GoodsTransferJobPictureProcess : JobBase, IInfoJobPictureProcess
     {
-        ICarTransferJob carTransferJobService;
-        public CarTransferJobPictureProcess()
+        IGoodsTransferJob goodsTransferJobService;
+        public GoodsTransferJobPictureProcess()
         {
-            this.JobKey = "FxTask.FxCar.Transfer.CarTransferJobPictureProcess";
-            this.carTransferJobService = DependencyResolver.Current.GetService<ICarTransferJob>();
+            this.JobKey = "FxTask.FxGoods.Transfer.GoodsTransferJobPictureProcess";
+            this.goodsTransferJobService = DependencyResolver.Current.GetService<IGoodsTransferJob>();
         }
 
         protected override void RunJobBusiness()
@@ -24,16 +26,16 @@ namespace FxTask.FxCar.Transfer
 
         public void PictureProcess()
         {
-            int carId = JobQueue.CarTransferJobPictureProcessQueue.GetItem(carTransferJobService.PictrueCdning);
-            if (carId == 0)
+            int goodsId = JobQueue.GoodsTransferJobPictureProcessQueue.GetItem(goodsTransferJobService.PictrueCdning);
+            if (goodsId == 0)
             {
                 return;
             }
-            using (var context = new FxCarContext())
+            using (var context = new FxGoodsContext())
             {
-                while (carId != 0)
+                while (goodsId != 0)
                 {
-                    var car = context.CarTransferInfos.Where(r => r.CarTransferInfoId == carId).FirstOrDefault();
+                    var car = context.GoodsTransferInfos.Where(r => r.GoodsTransferInfoId == goodsId).FirstOrDefault();
                     if (car != null)
                     {
                         string source;
@@ -51,7 +53,7 @@ namespace FxTask.FxCar.Transfer
                                     MaxHeight = 500,
                                     MaxWidth = 500,
                                 }) { CreateParentDirectory = true };
-                                ImageBuilder.Current.Build(job);                                
+                                ImageBuilder.Current.Build(job);
                             }
                             catch (Exception ex)
                             {
@@ -72,14 +74,14 @@ namespace FxTask.FxCar.Transfer
                         }
                         if (error == 0)
                         {
-                            carTransferJobService.PictrueCdnSuccessd(carId);
-                            carTransferJobService.Publish(carId);
+                            goodsTransferJobService.PictrueCdnSuccessd(goodsId);
+                            goodsTransferJobService.Publish(goodsId);
                         }
                         else
                         {
-                            carTransferJobService.PictrueCdnFailed(carId, errmsg);
+                            goodsTransferJobService.PictrueCdnFailed(goodsId, errmsg);
                         }
-                        carId = JobQueue.CarTransferJobPictureProcessQueue.GetItem(carTransferJobService.PictrueCdning);
+                        goodsId = JobQueue.GoodsTransferJobPictureProcessQueue.GetItem(goodsTransferJobService.PictrueCdning);
                     }
                 }
             }
@@ -87,11 +89,7 @@ namespace FxTask.FxCar.Transfer
 
         protected override void Completed()
         {
-            
+
         }
     }
 }
-
-
-//            ImageJob job = new ImageJob(Request.Files[upload].InputStream, "~/images/"+new Random().Next(1000000)+".jpg", new ResizeSettings("maxwidth=500&crop=auto"));
-//            ImageBuilder.Current.Build(job);

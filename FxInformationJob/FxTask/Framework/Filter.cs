@@ -13,27 +13,28 @@ namespace FxTask
         AppSettings appSetting;
         public Filter(ICacheManager cacheService, AppSettings appSetting)
         {
-            this.cacheService =cacheService;
+            this.cacheService = cacheService;
             this.appSetting = appSetting;
         }
 
-        public bool FilterContent(string content)
+        public FilterResult FilterContent(string content)
         {
             foreach (var item in GetFilterKeys())
             {
-                if (content.Contains(item))
+                if (!string.IsNullOrEmpty(content) && content.Contains(item))
                 {
-                    return false;
+                    return new FilterResult(item);
                 }
             }
-            return true;
+            return new FilterResult();
         }
 
         public List<string> GetFilterKeys()
         {
             return appSetting.FilterKeys();
         }
-
-
     }
+
+
+
 }

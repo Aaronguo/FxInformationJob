@@ -42,15 +42,19 @@ namespace FxInformationJob.App_Start
             container.RegisterSingle<FxTask.AppSettings>();
             container.RegisterSingle<FxTask.Filter>();
 
-            //FxCar
+            //FxTaskFxCar
             container.Register<Fx.Domain.FxCar.IService.ICarBuyJob, Fx.Domain.FxCar.CarBuyJobService>();
             container.Register<Fx.Domain.FxCar.IService.ICarTransferJob, Fx.Domain.FxCar.CarTransferJobService>();
-            
-            //FxTask
-            
 
-            // For instance:
-            // container.Register<IUserRepository, SqlUserRepository>();
+            //FxTaskFxGoods
+            container.Register<Fx.Domain.FxGoods.IService.IGoodsBuyJob, Fx.Domain.FxGoods.GoodsBuyJobService>();
+            container.Register<Fx.Domain.FxGoods.IService.IGoodsTransferJob, Fx.Domain.FxGoods.GoodsTransferJobService>();
+
+            //FxTaskFxHouse
+            container.Register<Fx.Domain.FxHouse.IService.IHouseBuyJob, Fx.Domain.FxHouse.HouseBuyJobService>();
+            container.Register<Fx.Domain.FxHouse.IService.IHouseTransferJob, Fx.Domain.FxHouse.HouseTransferJobService>();
+            
+           
         }
     }
 }

@@ -1,20 +1,23 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
-using Fx.Domain.FxCar;
-using Fx.Domain.FxCar.IService;
+using Fx.Domain.FxHouse;
+using Fx.Domain.FxHouse.IService;
 using FxTask.IService;
 using ImageResizer;
 
-namespace FxTask.FxCar.Transfer
+namespace FxTask.FxHouse.Transfer
 {
-    public class CarTransferJobPictureProcess : JobBase, IInfoJobPictureProcess
+    public class HouseTransferJobPictureProcess : JobBase, IInfoJobPictureProcess
     {
-        ICarTransferJob carTransferJobService;
-        public CarTransferJobPictureProcess()
+        IHouseTransferJob houseTransferJobService;
+        public HouseTransferJobPictureProcess()
         {
-            this.JobKey = "FxTask.FxCar.Transfer.CarTransferJobPictureProcess";
-            this.carTransferJobService = DependencyResolver.Current.GetService<ICarTransferJob>();
+            this.JobKey = "FxTask.FxHouse.Transfer.HouseTransferJobPictureProcess";
+            this.houseTransferJobService = DependencyResolver.Current.GetService<IHouseTransferJob>();
         }
 
         protected override void RunJobBusiness()
@@ -24,16 +27,16 @@ namespace FxTask.FxCar.Transfer
 
         public void PictureProcess()
         {
-            int carId = JobQueue.CarTransferJobPictureProcessQueue.GetItem(carTransferJobService.PictrueCdning);
-            if (carId == 0)
+            int houseId = JobQueue.HouseTransferJobPictureProcessQueue.GetItem(houseTransferJobService.PictrueCdning);
+            if (houseId == 0)
             {
                 return;
             }
-            using (var context = new FxCarContext())
+            using (var context = new FxHouseContext())
             {
-                while (carId != 0)
+                while (houseId != 0)
                 {
-                    var car = context.CarTransferInfos.Where(r => r.CarTransferInfoId == carId).FirstOrDefault();
+                    var car = context.HouseTransferInfos.Where(r => r.HouseTransferInfoId == houseId).FirstOrDefault();
                     if (car != null)
                     {
                         string source;
@@ -51,7 +54,7 @@ namespace FxTask.FxCar.Transfer
                                     MaxHeight = 500,
                                     MaxWidth = 500,
                                 }) { CreateParentDirectory = true };
-                                ImageBuilder.Current.Build(job);                                
+                                ImageBuilder.Current.Build(job);
                             }
                             catch (Exception ex)
                             {
@@ -72,14 +75,14 @@ namespace FxTask.FxCar.Transfer
                         }
                         if (error == 0)
                         {
-                            carTransferJobService.PictrueCdnSuccessd(carId);
-                            carTransferJobService.Publish(carId);
+                            houseTransferJobService.PictrueCdnSuccessd(houseId);
+                            houseTransferJobService.Publish(houseId);
                         }
                         else
                         {
-                            carTransferJobService.PictrueCdnFailed(carId, errmsg);
+                            houseTransferJobService.PictrueCdnFailed(houseId, errmsg);
                         }
-                        carId = JobQueue.CarTransferJobPictureProcessQueue.GetItem(carTransferJobService.PictrueCdning);
+                        houseId = JobQueue.HouseTransferJobPictureProcessQueue.GetItem(houseTransferJobService.PictrueCdning);
                     }
                 }
             }
@@ -87,11 +90,7 @@ namespace FxTask.FxCar.Transfer
 
         protected override void Completed()
         {
-            
+
         }
     }
 }
-
-
-//            ImageJob job = new ImageJob(Request.Files[upload].InputStream, "~/images/"+new Random().Next(1000000)+".jpg", new ResizeSettings("maxwidth=500&crop=auto"));
-//            ImageBuilder.Current.Build(job);
