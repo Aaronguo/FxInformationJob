@@ -24,8 +24,9 @@ namespace FxTask
         {
             if (!appSettings.TaskShutDown())
             {
+                JobStart();
                 RunJobBusiness();
-                Completed();
+                JobCompleted();
             }
         }
 
@@ -34,9 +35,20 @@ namespace FxTask
 
         }
 
-        protected virtual void Completed()
+        protected virtual void JobStart()
         {
+            if (appSettings.WriteInnerInfo()&&!string.IsNullOrEmpty(appSettings.WriteInnerInfoPath()))
+            {
+                Logging.LogText(string.Format("{0} is starting!!", this.JobKey));
+            }
+        }
 
+        protected virtual void JobCompleted()
+        {
+            if (appSettings.WriteInnerInfo() && !string.IsNullOrEmpty(appSettings.WriteInnerInfoPath()))
+            {
+                Logging.LogText(string.Format("{0}is completed!!", this.JobKey));
+            }
         }
     }
 }

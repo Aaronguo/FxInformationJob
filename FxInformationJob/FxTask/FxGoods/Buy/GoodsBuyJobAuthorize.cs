@@ -87,9 +87,13 @@ namespace FxTask.FxGoods.Buy
             Authorize();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
-            new GoodsBuyJobPictureProcess().Execute();
+            base.JobCompleted();
+            if (JobQueue.GoodsBuyJobPictureProcessQueue.HasItem())
+            {
+                new GoodsBuyJobPictureProcess().Execute();
+            }
         }
     }
 }

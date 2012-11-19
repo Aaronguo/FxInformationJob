@@ -93,9 +93,13 @@ namespace FxTask.FxHouse.Transfer
             Authorize();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
-            new HouseTransferJobPictureProcess().Execute();
+            base.JobCompleted();
+            if (JobQueue.HouseTransferJobPictureProcessQueue.HasItem())
+            {
+                new HouseTransferJobPictureProcess().Execute();
+            }
         }
     }
 }

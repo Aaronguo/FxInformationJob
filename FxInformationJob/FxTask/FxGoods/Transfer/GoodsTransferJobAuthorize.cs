@@ -87,9 +87,13 @@ namespace FxTask.FxGoods.Transfer
             Authorize();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
-            new GoodsTransferJobPictureProcess().Execute();
+            base.JobCompleted();
+            if (JobQueue.GoodsTransferJobPictureProcessQueue.HasItem())
+            {
+                new GoodsTransferJobPictureProcess().Execute();
+            }
         }
     }
 }

@@ -37,8 +37,9 @@ namespace FxTask.FxCar.Transfer
             LoadJob();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
+            base.JobCompleted();
             if (JobQueue.CarTransferJobLoadQueue.HasItem())
             {
                 new CarTransferJobAuthorize().Execute();

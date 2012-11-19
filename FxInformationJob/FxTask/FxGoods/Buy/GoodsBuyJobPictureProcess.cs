@@ -86,10 +86,5 @@ namespace FxTask.FxGoods.Buy
                 }
             }
         }
-
-        protected override void Completed()
-        {
-
-        }
     }
 }

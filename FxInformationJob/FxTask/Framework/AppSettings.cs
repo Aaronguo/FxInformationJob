@@ -105,16 +105,16 @@ namespace FxTask
 
         public bool TaskShutDown()
         {
-            if (cacheService.Get("TaskShutDown") == null)
-            {
-                cacheService.Insert("TaskShutDown", GetBool("TaskShutDown", true), 3600, System.Web.Caching.CacheItemPriority.Default);
-            }
-            object o = cacheService.Get("TaskShutDown");
-            if (o != null)
-            {
-                return Convert.ToBoolean(o);
-            }
-            return true;
+        //    if (cacheService.Get("TaskShutDown") == null)
+        //    {
+        //        cacheService.Insert("TaskShutDown", , 3600, System.Web.Caching.CacheItemPriority.Default);
+        //    }
+        //    object o = cacheService.Get("TaskShutDown");
+        //    if (o != null)
+        //    {
+        //        return Convert.ToBoolean(o);
+        //    }
+            return GetBool("TaskShutDown", true);
         }
 
         public List<string> FilterKeys()
@@ -177,9 +177,16 @@ namespace FxTask
             return "";
         }
 
+        public bool WriteInnerInfo()
+        {
+            return GetBool("WriteInnerInfo", false);
+        }
+
+        public string WriteInnerInfoPath()
+        {
+            return GetString("WriteInnerInfoPath", "");
+        }
+
         #endregion
-
-
-
     }
 }

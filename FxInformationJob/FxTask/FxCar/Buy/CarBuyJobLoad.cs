@@ -37,8 +37,9 @@ namespace FxTask.FxCar.Buy
             LoadJob();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
+            base.JobCompleted();
             if (JobQueue.CarBuyJobLoadQueue.HasItem())
             {
                 new CarBuyJobAuthorize().Execute();

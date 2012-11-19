@@ -84,11 +84,6 @@ namespace FxTask.FxCar.Transfer
                 }
             }
         }
-
-        protected override void Completed()
-        {
-            
-        }
     }
 }
 

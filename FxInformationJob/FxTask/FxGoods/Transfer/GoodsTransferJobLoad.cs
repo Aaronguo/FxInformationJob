@@ -20,8 +20,9 @@ namespace FxTask.FxGoods.Transfer
             LoadJob();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
+            base.JobCompleted();
             if (JobQueue.GoodsTransferJobLoadQueue.HasItem())
             {
                 new GoodsTransferJobAuthorize().Execute();

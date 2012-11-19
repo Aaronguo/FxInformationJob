@@ -8,7 +8,7 @@ using FxTask.IService;
 
 namespace FxTask.FxGoods.Buy
 {
-    class GoodsBuyJobLoad : JobBase, IInfoJobLoad
+   public class GoodsBuyJobLoad : JobBase, IInfoJobLoad
     {
         public GoodsBuyJobLoad()
         {
@@ -39,8 +39,9 @@ namespace FxTask.FxGoods.Buy
             LoadJob();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
+            base.JobCompleted();
             if (JobQueue.GoodsBuyJobLoadQueue.HasItem())
             {
                 new GoodsBuyJobAuthorize().Execute();

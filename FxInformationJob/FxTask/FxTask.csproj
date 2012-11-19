@@ -122,6 +122,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /V "$(TargetDir)\FxTask.dll" "E:\Program Files\GitHubWorkspace\net\InformationPlatform\Fx.InformationPlatform\Fx.InformationPlatform.Site\packages\FxTask\FxTask.dll"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

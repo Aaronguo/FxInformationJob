@@ -87,10 +87,5 @@ namespace FxTask.FxHouse.Transfer
                 }
             }
         }
-
-        protected override void Completed()
-        {
-
-        }
     }
 }

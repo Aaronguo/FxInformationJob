@@ -7,6 +7,10 @@ namespace FxTask.KeepYingTao
 {
     public class KeepYingTao : JobBase
     {
+        public KeepYingTao()
+        {
+            this.JobKey = "FxTask.KeepYingTao.KeepYingTao";
+        }
         protected override void RunJobBusiness()
         {
             if (!appSettings.TaskShutDown() && !string.IsNullOrEmpty(appSettings.OwnSiteUrl()))

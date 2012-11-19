@@ -20,8 +20,9 @@ namespace FxTask.FxHouse.Transfer
             LoadJob();
         }
 
-        protected override void Completed()
+        protected override void JobCompleted()
         {
+            base.JobCompleted();
             if (JobQueue.HouseTransferJobLoadQueue.HasItem())
             {
                 new HouseTransferJobAuthorize().Execute();

@@ -86,10 +86,5 @@ namespace FxTask.FxGoods.Transfer
                 }
             }
         }
-
-        protected override void Completed()
-        {
-
-        }
     }
 }

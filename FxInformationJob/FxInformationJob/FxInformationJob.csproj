@@ -182,7 +182,9 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
-    <Content Include="Config\AppSetting.config" />
+    <Content Include="Config\AppSetting.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Config\DataBase.config" />
     <Content Include="Config\JobException.config" />
     <Content Include="Config\JobLog.config" />
@@ -202,7 +204,9 @@
       <DependentUpon>jquery.validate.js</DependentUpon>
     </Content>
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
