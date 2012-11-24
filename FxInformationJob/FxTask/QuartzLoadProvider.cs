@@ -23,17 +23,17 @@ namespace FxTask
         {
             //AddJob<FxTask.KeepOwn.KeepOwn>(JobKey.KeepOwn, JobKey.KeepOwn + "Group", 10, 40);
 
-            AddJob<FxTask.KeepYingTao.KeepYingTao>(JobKey.KeepYingTao, JobKey.KeepYingTao + "Group", 8, 40);
+            //AddJob<FxTask.KeepYingTao.KeepYingTao>(JobKey.KeepYingTao, JobKey.KeepYingTao + "Group", 8, 40);
 
+            RunGoodsTransfer();
+            //AddJob<FxGoods.Buy.GoodsBuyJobLoad>(JobKey.GoodsBuyLoad, JobKey.GoodsBuyLoad + "Group", 1);//2分钟考虑100张图片压缩
+            //AddJob<FxGoods.Transfer.GoodsTransferJobLoad>(JobKey.GoodsTransferLoad, JobKey.GoodsTransferLoad + "Group", 1, 20);
 
-            AddJob<FxGoods.Buy.GoodsBuyJobLoad>(JobKey.GoodsBuyLoad, JobKey.GoodsBuyLoad + "Group", 1);//2分钟考虑100张图片压缩
-            AddJob<FxGoods.Transfer.GoodsTransferJobLoad>(JobKey.GoodsTransferLoad, JobKey.GoodsTransferLoad + "Group", 1, 20);
+            //AddJob<FxCar.Buy.CarBuyJobLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 1, 12);//2分钟考虑100张图片压缩
+            //AddJob<FxCar.Transfer.CarTransferJobLoad>(JobKey.CarTransferJobLoad, JobKey.CarTransferJobLoad + "Group", 1, 32);
 
-            AddJob<FxCar.Buy.CarBuyJobLoad>(JobKey.CarBuyLoad, JobKey.CarBuyLoad + "Group", 1, 12);//2分钟考虑100张图片压缩
-            AddJob<FxCar.Transfer.CarTransferJobLoad>(JobKey.CarTransferJobLoad, JobKey.CarTransferJobLoad + "Group", 1, 32);
-
-            AddJob<FxHouse.Buy.HouseBuyJobLoad>(JobKey.HouseBuyLoad, JobKey.HouseBuyLoad + "Group", 1, 24);//2分钟考虑100张图片压缩
-            AddJob<FxHouse.Transfer.HouseTransferJobLoad>(JobKey.HouseTransferLoad, JobKey.HouseTransferLoad + "Group", 1, 54);
+            //AddJob<FxHouse.Buy.HouseBuyJobLoad>(JobKey.HouseBuyLoad, JobKey.HouseBuyLoad + "Group", 1, 24);//2分钟考虑100张图片压缩
+            //AddJob<FxHouse.Transfer.HouseTransferJobLoad>(JobKey.HouseTransferLoad, JobKey.HouseTransferLoad + "Group", 1, 54);
 
 
             //AddJob<FxGoods.Buy.GoodsBuyJobLoad>(JobKey.GoodsBuyLoad, JobKey.GoodsBuyLoad + "Group", 1);
@@ -59,6 +59,44 @@ namespace FxTask
                 .WithSimpleSchedule(r => r.WithIntervalInMinutes(minutes).RepeatForever())
                 .Build();
             scheduler.ScheduleJob(job, trigger);
+        }
+
+
+
+
+        public void RunGoodsTransfer()
+        {
+            new FxTask.FxGoods.Transfer.GoodsTransferJobLoad().Execute();
+        }
+
+
+        public void RunGoodsBuy()
+        {
+            new FxTask.FxGoods.Buy.GoodsBuyJobLoad().Execute();
+        }
+
+
+        public void RunCarBuy()
+        {
+            new FxTask.FxCar.Buy.CarBuyJobLoad().Execute();
+        }
+
+
+        public void RunCarTransfer()
+        {
+            new FxTask.FxCar.Transfer.CarTransferJobLoad().Execute();
+        }
+
+
+        public void RunHouseBuy()
+        {
+            new FxTask.FxHouse.Buy.HouseBuyJobLoad().Execute();
+        }
+
+
+        public void RunHouseTransfer()
+        {
+            new FxTask.FxHouse.Transfer.HouseTransferJobLoad().Execute();
         }
     }
 }
