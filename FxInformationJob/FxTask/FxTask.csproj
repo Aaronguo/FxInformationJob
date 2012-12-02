@@ -33,6 +33,10 @@
     <Reference Include="ChenHttp">
       <HintPath>..\packages\ChenHttp\ChenHttp.dll</HintPath>
     </Reference>
+    <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Quartz.NET-2.0\bin\4.0\release\Quartz\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
     </Reference>

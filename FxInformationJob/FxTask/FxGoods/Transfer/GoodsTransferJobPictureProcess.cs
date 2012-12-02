@@ -40,6 +40,7 @@ namespace FxTask.FxGoods.Transfer
                     {
                         string source;
                         string destnation;
+                        string destnationmin;
                         int error = 0;
                         string errmsg = "";
                         foreach (var picture in car.Pictures)
@@ -48,12 +49,19 @@ namespace FxTask.FxGoods.Transfer
                             {
                                 source = string.Format(picture.PhysicalPath);
                                 destnation = string.Format("{0}{1}", appSettings.CdnPath(), picture.ImageUrl.Replace(@"/", @"\"));
+                                destnationmin = string.Format("{0}{1}", appSettings.CdnPath(), picture.MinImageUrl.Replace(@"/", @"\"));
                                 var job = new ImageJob(source, destnation, new ResizeSettings()
                                 {
                                     MaxHeight = 500,
                                     MaxWidth = 500,
                                 }) { CreateParentDirectory = true };
+                                var jobmin = new ImageJob(source, destnationmin, new ResizeSettings()
+                                {
+                                    MaxHeight = 64,
+                                    MaxWidth = 64,
+                                }) { CreateParentDirectory = true };
                                 ImageBuilder.Current.Build(job);
+                                ImageBuilder.Current.Build(jobmin);
                             }
                             catch (Exception ex)
                             {
